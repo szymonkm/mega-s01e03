@@ -1,0 +1,59 @@
+---
+layout: runbook
+title: '#4471 review: separate the date problems'
+owner: szymonkm
+status: reviewed
+reviewed: 2026-10-31
+signature: szymonkm
+---
+
+<script>
+  import ReviewSummary from '#lib/kb/ReviewSummary.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+The original [incident page](/kb/incidents/4471) claims one known issue with one queued fix. The exported data and running components show separate causes. A shared subject does not prove a shared problem.
+
+## Count the reports, then classify
+
+<ReviewSummary />
+
+Use `uniqueById` before filtering `mergedInto === 4471`. Then use `groupByCause` with `tenantOf`. These functions read the tenant directory and use the platform's date-field order. Counts below are computed from the export, not copied from the old page.
+
+<CauseTable ticket={4471} />
+
+## Parser problem
+
+The shared parser reads month first. Day-first tenants therefore get swapped dates. This affects app and email reports, plus forms whose hints agree with their tenant's date order.
+
+For example, report `R-41200` from `harbour.dental` describes an April booking appearing in July. Report `R-41205` belongs here despite its `hint` intake tag: `morrow.tax` uses a day-first locale and this report came through the app.
+
+Fix the parser's date contract. Use an explicit date format or structured date fields. Verify ambiguous and unambiguous dates against each tenant's locale.
+
+## Form-hint problem
+
+The `booking-v3` form prints `MM/DD/YYYY` for day-first tenants. People follow that hint, but the form interprets their entry in the tenant's order. This is a separate bug and needs a separate fix.
+
+Reports come through the form for `alder.physio`, `copper.studio`, and `pale.harbour`. Report `R-41230` belongs here despite its `parser` intake tag. Fix the displayed hint and make its format agree with the input interpretation. Test all affected tenant configurations.
+
+## What the timeline shows
+
+<QueueTimeline ticket={4471} />
+
+Compare receipt dates with merge dates. The July merge spike records desk activity; it does not show that the problem started in July. Reports continued after the first merge. Marking the ticket known did not stop the reports.
+
+## Change how the desk merges reports
+
+The [old subject rule](/kb/triage/dedupe) can merge different causes and split one cause across different subjects. Its review date is old enough to trigger the kb's stale-page warning. Read the [replacement decision](/kb/decisions/0002-dedupe-by-cause) before merging more reports.
+
+Use tenant locale, form version, channel, and symptom evidence. If the cause is unknown, keep the report separate until reviewed. Recheck incoming reports while both fixes remain open. Keep the accepted historical decision unchanged.
+
+## Evidence and limits
+
+This review uses the 2026-10-04 export: `reports-4471.json`, the tenant directory, `desk-notes.json`, and the supplied classification and chart components. It does not establish that a fix shipped. New reports can change the counts. Rebuild this page after replacing an export.
+
+Author: `szymonkm`. The stamp below is computed from this page's frontmatter signature.
+
+<RenderStamp {signature} />

@@ -1,0 +1,31 @@
+---
+layout: runbook
+title: '0002 · Merge reports by cause and evidence'
+owner: szymonkm
+status: proposed
+reviewed: 2026-10-31
+signature: szymonkm
+---
+
+<script>
+  import DedupeExplorer from '#lib/kb/DedupeExplorer.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+## Context
+
+The [review of #4471](/kb/incidents/4471-review) shows that matching subjects can hide separate causes. Different subjects can also describe the same cause. The old [decision 0001](/kb/decisions/0001-dedupe-by-subject) remains unchanged as historical evidence.
+
+## Proposed replacement for decision 0001
+
+Deduplicate export rows by report ID. Determine the tenant, locale, form version, channel, and symptom. Merge only when evidence supports the same cause. A subject match or intake tag is not sufficient. Keep unknown causes separate for review. Footnote conflicting symptoms and investigate them.
+
+## Verify the rule
+
+<DedupeExplorer />
+
+## Consequences
+
+Triage requires reading and tenant lookup. Engineering receives separate tickets for separate fixes. Recheck reports when tenant settings or classification rules change. Support must approve this proposal before treating it as an accepted policy.
+
+<RenderStamp {signature} />
