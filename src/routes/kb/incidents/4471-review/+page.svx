@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 review: separate the date problems'
 owner: szymonkm
-status: reviewed
+status: closed
 reviewed: 2026-10-31
 signature: szymonkm
 ---
@@ -15,6 +15,12 @@ signature: szymonkm
 </script>
 
 The original [incident page](/kb/incidents/4471) claims one known issue with one queued fix. The exported data and running components show separate causes. A shared subject does not prove a shared problem.
+
+## Engineering outcome — 5 October 2026
+
+The course's engineering update reports #4471 closed on 5 October. The parser is **fixed**: `fix(dates): parse dd/mm for eu locales`. The hint is **won't fix** because the `booking-v3` form was retired. These are different closure reasons. Retirement does not establish that the hint was corrected.
+
+The public tracking issues are [parser, completed](https://github.com/szymonkm/mega-s01e03/issues/1) and [hint, not planned](https://github.com/szymonkm/mega-s01e03/issues/2). Historical report counts remain tied to the export. The sections below explain the original symptoms and required checks.
 
 ## Count the reports, then classify
 
@@ -48,11 +54,11 @@ Compare receipt dates with merge dates. The July merge spike records desk activi
 
 The [old subject rule](/kb/triage/dedupe) can merge different causes and split one cause across different subjects. Its review date is old enough to trigger the kb's stale-page warning. Read the [replacement decision](/kb/decisions/0002-dedupe-by-cause) before merging more reports.
 
-Use tenant locale, form version, channel, and symptom evidence. If the cause is unknown, keep the report separate until reviewed. Recheck incoming reports while both fixes remain open. Keep the accepted historical decision unchanged.
+Use tenant locale, form version, channel, and symptom evidence. If the cause is unknown, keep the report separate until reviewed. Check new reports against the parser fix and form retirement before merging them into this closed incident. Keep the accepted historical decision unchanged.
 
 ## Evidence and limits
 
-This review uses the 2026-10-04 export: `reports-4471.json`, the tenant directory, `desk-notes.json`, and the supplied classification and chart components. It does not establish that a fix shipped. New reports can change the counts. Rebuild this page after replacing an export.
+This review uses the 2026-10-04 export: `reports-4471.json`, the tenant directory, `desk-notes.json`, and the supplied classification and chart components. Closure outcomes come from the engineering update on the course challenge page, checked on 2026-10-31. The export itself predates that update. New reports can change the counts. Rebuild this page after replacing an export.
 
 Author: `szymonkm`. The stamp below is computed from this page's frontmatter signature.
 

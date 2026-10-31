@@ -18,7 +18,7 @@ Rebuild after a data update. The source export is dated 2026-10-04.
 
 Issue drafts and report-ID manifests are in `tickets/`.
 The proposed public repository is `szymonkm/mega-s01e03`.
-Publication requires the student's approval.
+The student approved publication and revisions for course acceptance.
 
 **kb** = knowledge base. What the support desk knows about how our products break, written
 down where the code can keep it honest.
